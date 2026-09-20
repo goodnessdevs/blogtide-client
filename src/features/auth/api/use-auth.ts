@@ -1,0 +1,119 @@
+"use client";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/errors";
+import { authApi } from "./auth.api";
+import { useAuthStore } from "../store/auth.store";
+import type { ResetPasswordInput } from "../schema";
+import type { SessionResponse } from "../types";
+
+function applySession(data: SessionResponse) {
+  useAuthStore.getState().setSession(data.access_token, data.user);
+}
+
+export function useLogin() {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: authApi.login,
+    onSuccess: (data) => {
+      applySession(data);
+      toast.success(`Welcome back, ${data.user.username}`);
+      router.replace(data.user.is_verified ? "/" : "/verify-email");
+    },
+    onError: (err) => toast.error(getErrorMessage(err, "Login failed")),
+  });
+}
+
+export function useSignup() {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: authApi.register,
+    onSuccess: (data) => {
+      applySession(data);
+      toast.success("Account created. Check your email for a verification code.");
+      router.replace("/verify-email");
+    },
+    onError: (err) => toast.error(getErrorMessage(err, "Sign up failed")),
+  });
+}
+
+export function useLogout() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authApi.logout,
+    // Clear locally even if the server call failed: the user asked to leave.
+    onSettled: () => {
+      useAuthStore.getState().clear();
+      queryClient.clear();
+      router.replace("/");
+      toast.success("Signed out");
+    },
+  });
+}
+
+export function useVerifyEmail() {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: authApi.verifyEmail,
+    onSuccess: ({ user }) => {
+      useAuthStore.getState().setUser(user);
+      toast.success("Email verified");
+      router.replace("/");
+    },
+    onError: (err) => toast.error(getErrorMessage(err, "Verification failed")),
+  });
+}
+
+export function useResendVerification() {
+  return useMutation({
+    mutationFn: authApi.resendVerification,
+    onSuccess: ({ message }) => toast.success(message),
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: authApi.forgotPassword,
+    onSuccess: ({ message }) => toast.success(message),
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
+
+export function useResetPassword(token: string) {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (input: ResetPasswordInput) => authApi.resetPassword(token, input),
+    onSuccess: ({ message }) => {
+      toast.success(message);
+      router.replace("/login");
+    },
+    onError: (err) => toast.error(getErrorMessage(err, "Reset failed")),
+  });
+}
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: authApi.changePassword,
+    onSuccess: ({ message }) => toast.success(message),
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
+
+export function useDeleteAccount() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authApi.deleteAccount,
+    onSuccess: () => {
+      useAuthStore.getState().clear();
+      queryClient.clear();
+      toast.success("Your account has been deleted");
+      router.replace("/");
+    },
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
