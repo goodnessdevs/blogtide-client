@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Merriweather } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -13,6 +13,15 @@ const heading = Merriweather({ variable: "--font-serif", subsets: ["latin"], wei
 export const metadata: Metadata = {
   title: { default: env.appName, template: `%s · ${env.appName}` },
   description: "A calm place to write, publish and read.",
+  applicationName: env.appName,
+  appleWebApp: { capable: true, title: env.appName, statusBarStyle: "black-translucent" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
