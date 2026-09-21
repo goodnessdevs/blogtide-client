@@ -51,7 +51,7 @@ function Editor({ id }: { id: string }) {
 
 export function EditPost({ id }: { id: string }) {
   return (
-    <RequireAuth verified>
+    <RequireAuth>
       <PageShell title="Edit post" narrow>
         <Editor id={id} />
       </PageShell>

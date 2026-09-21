@@ -12,7 +12,7 @@ npm install
 npm run dev                    # http://localhost:3000
 ```
 
-The API must be running for anything beyond the static pages. Sign-up, verification codes and password resets are driven by the backend; when it has no SMTP configured it prints the codes/links to its own terminal.
+The API must be running for anything beyond the static pages. Sign-up and password resets are driven by the backend; when it has no SMTP configured it prints reset links to its own terminal.
 
 ## Scripts
 

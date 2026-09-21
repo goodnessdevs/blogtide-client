@@ -6,10 +6,6 @@ export const metadata: Metadata = { title: "Support" };
 
 const faqs = [
   {
-    q: "I didn't get my verification code.",
-    a: "Codes expire after 10 minutes. Open the verify page and press “Resend code”; check your spam folder too.",
-  },
-  {
     q: "How do I reset my password?",
     a: "Use “Forgot password?” on the sign-in page. The reset link in the email is valid for 15 minutes.",
   },

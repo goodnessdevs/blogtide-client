@@ -12,7 +12,7 @@ function WriteForm() {
 
 export default function WritePage() {
   return (
-    <RequireAuth verified>
+    <RequireAuth>
       <PageShell title="Write a post" description="Your words, your pace. Publish when it feels right." narrow>
         <WriteForm />
       </PageShell>

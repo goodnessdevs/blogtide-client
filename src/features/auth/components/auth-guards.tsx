@@ -16,20 +16,18 @@ function FullPageSpinner() {
 // The access token lives in memory, so route protection has to happen on the
 // client once the session bootstrap has settled. Redirecting inside an effect
 // is the one legitimate place for it: navigation is a side effect.
-export function RequireAuth({ children, verified = false }: { children: React.ReactNode; verified?: boolean }) {
+export function RequireAuth({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, isLoading, isAuthenticated } = useSession();
+  const { isLoading, isAuthenticated } = useSession();
 
   const needsLogin = !isLoading && !isAuthenticated;
-  const needsVerification = verified && isAuthenticated && user !== null && !user.is_verified;
 
   useEffect(() => {
     if (needsLogin) router.replace(`/login?next=${encodeURIComponent(pathname)}`);
-    else if (needsVerification) router.replace("/verify-email");
-  }, [needsLogin, needsVerification, pathname, router]);
+  }, [needsLogin, pathname, router]);
 
-  if (isLoading || needsLogin || needsVerification) return <FullPageSpinner />;
+  if (isLoading || needsLogin) return <FullPageSpinner />;
   return <>{children}</>;
 }
 

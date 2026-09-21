@@ -32,11 +32,6 @@ export const signupSchema = z
   });
 export type SignupInput = z.infer<typeof signupSchema>;
 
-export const verifyEmailSchema = z.object({
-  code: z.string().length(6, "Enter the 6-digit code"),
-});
-export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
-
 export const forgotPasswordSchema = z.object({ email: emailSchema });
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 

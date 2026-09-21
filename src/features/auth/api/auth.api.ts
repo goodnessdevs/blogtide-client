@@ -6,7 +6,6 @@ import type {
   LoginInput,
   ResetPasswordInput,
   SignupInput,
-  VerifyEmailInput,
 } from "../schema";
 import type { SessionResponse, User } from "../types";
 
@@ -20,12 +19,6 @@ export const authApi = {
   logout: () => api.post<{ message: string }>("/auth/logout").then((r) => r.data),
 
   me: () => api.get<{ user: User }>("/auth/me").then((r) => r.data.user),
-
-  verifyEmail: (input: VerifyEmailInput) =>
-    api.post<{ message: string; user: User }>("/auth/verify-email", input).then((r) => r.data),
-
-  resendVerification: () =>
-    api.post<{ message: string }>("/auth/resend-verification").then((r) => r.data),
 
   forgotPassword: (input: ForgotPasswordInput) =>
     api.post<{ message: string }>("/auth/forgot-password", input).then((r) => r.data),

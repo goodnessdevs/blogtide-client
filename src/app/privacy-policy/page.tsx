@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         </p>
         <h2>How we use it</h2>
         <p>
-          To run your account, send transactional email (verification codes, password resets, account notices) and
+          To run your account, send transactional email (welcome, password resets, account notices) and
           protect the platform from abuse. We do not sell your data or use it for advertising.
         </p>
         <h2>Where it lives</h2>

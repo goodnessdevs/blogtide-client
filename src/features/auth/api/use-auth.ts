@@ -20,7 +20,7 @@ export function useLogin() {
     onSuccess: (data) => {
       applySession(data);
       toast.success(`Welcome back, ${data.user.username}`);
-      router.replace(data.user.is_verified ? "/" : "/verify-email");
+      router.replace("/");
     },
     onError: (err) => toast.error(getErrorMessage(err, "Login failed")),
   });
@@ -32,8 +32,8 @@ export function useSignup() {
     mutationFn: authApi.register,
     onSuccess: (data) => {
       applySession(data);
-      toast.success("Account created. Check your email for a verification code.");
-      router.replace("/verify-email");
+      toast.success(`Welcome to BlogTide, ${data.user.username}`);
+      router.replace("/write");
     },
     onError: (err) => toast.error(getErrorMessage(err, "Sign up failed")),
   });
@@ -51,27 +51,6 @@ export function useLogout() {
       router.replace("/");
       toast.success("Signed out");
     },
-  });
-}
-
-export function useVerifyEmail() {
-  const router = useRouter();
-  return useMutation({
-    mutationFn: authApi.verifyEmail,
-    onSuccess: ({ user }) => {
-      useAuthStore.getState().setUser(user);
-      toast.success("Email verified");
-      router.replace("/");
-    },
-    onError: (err) => toast.error(getErrorMessage(err, "Verification failed")),
-  });
-}
-
-export function useResendVerification() {
-  return useMutation({
-    mutationFn: authApi.resendVerification,
-    onSuccess: ({ message }) => toast.success(message),
-    onError: (err) => toast.error(getErrorMessage(err)),
   });
 }
 

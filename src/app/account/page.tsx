@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { format } from "date-fns";
-import { BadgeCheck, LogOut, MailWarning } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RequireAuth } from "@/features/auth/components/auth-guards";
@@ -33,20 +32,7 @@ function AccountContent() {
             </AvatarFallback>
           </Avatar>
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-semibold">{user.username}</span>
-              {user.is_verified ? (
-                <Badge variant="secondary">
-                  <BadgeCheck className="text-emerald-500" /> Verified
-                </Badge>
-              ) : (
-                <Link href="/verify-email">
-                  <Badge variant="destructive">
-                    <MailWarning /> Verify email
-                  </Badge>
-                </Link>
-              )}
-            </div>
+            <div className="text-lg font-semibold">{user.username}</div>
             <div className="text-sm text-muted-foreground">{user.email}</div>
             <div className="text-xs text-muted-foreground">
               Member since {format(new Date(user.created_at), "MMMM yyyy")}

@@ -26,7 +26,7 @@ npx shadcn@latest add <component>   # UI primitives live in src/components/ui
 
 Feature-based layout under `src/`:
 
-- `app/` — routes only. Pages that need a session wrap content in `RequireAuth` (`verified` prop also enforces email verification); login/signup use `GuestOnly`. Pages reading `useSearchParams` are wrapped in `<Suspense>`. `providers.tsx` composes ThemeProvider → QueryClientProvider → TooltipProvider + session bootstrap + Toaster.
+- `app/` — routes only. Pages that need a session wrap content in `RequireAuth`; login/signup use `GuestOnly`. Pages reading `useSearchParams` are wrapped in `<Suspense>`. `providers.tsx` composes ThemeProvider → QueryClientProvider → TooltipProvider + session bootstrap + Toaster.
 - `features/auth/` — `store/auth.store.ts` (Zustand: `accessToken`, `user`, `status`; deliberately not persisted), `api/auth.api.ts` (axios calls), `api/use-auth.ts` (mutations that update the store and toast), `hooks/use-session.ts` (`useSession` + one-shot `useSessionBootstrap` that calls refresh on load), `schema.ts` (Zod, mirrors the Go validators), `components/`.
 - `features/posts/` — same shape; `api/use-posts.ts` owns the `postKeys` query-key factory and invalidates `postKeys.lists()` after every mutation. Posts are sent as `multipart/form-data` (see `posts.api.ts`) so the optional `cover` file rides along.
 - `lib/axios.ts` — single client. Request interceptor attaches the Bearer token from `useAuthStore.getState()`; response interceptor does a single-flight refresh on 401 and retries once. `refreshSession()` is the only place the refresh cookie is used and always sends `X-Requested-With`.

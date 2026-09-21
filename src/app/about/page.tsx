@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "About" };
 const values = [
   { icon: Feather, title: "Write without friction", body: "A clean editor, a title, a cover image. Nothing else between you and publishing." },
   { icon: Zap, title: "Fast by default", body: "A Go API and a Next.js frontend keep pages quick on any connection." },
-  { icon: Lock, title: "Your account, protected", body: "Short-lived sessions, hashed credentials and verified emails from day one." },
+  { icon: Lock, title: "Your account, protected", body: "Short-lived sessions, hashed credentials and rate-limited sign-in from day one." },
 ];
 
 export default function AboutPage() {
